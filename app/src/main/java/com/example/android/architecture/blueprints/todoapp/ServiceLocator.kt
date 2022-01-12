@@ -20,6 +20,7 @@ import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import com.example.android.architecture.blueprints.todoapp.data.source.DefaultTasksRepository
+import com.example.android.architecture.blueprints.todoapp.data.source.ShortcutsRepository
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksDataSource
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import com.example.android.architecture.blueprints.todoapp.data.source.local.TasksLocalDataSource
@@ -35,9 +36,13 @@ object ServiceLocator {
 
     private val lock = Any()
     private var database: ToDoDatabase? = null
+
     @Volatile
     var tasksRepository: TasksRepository? = null
         @VisibleForTesting set
+
+    @Volatile
+    var shortcutsRepository: ShortcutsRepository? = null
 
     fun provideTasksRepository(context: Context): TasksRepository {
         synchronized(this) {
@@ -45,9 +50,21 @@ object ServiceLocator {
         }
     }
 
+    private fun createShortcutsRepository(context: Context): ShortcutsRepository {
+        val newRepo = ShortcutsRepository(context.applicationContext)
+        shortcutsRepository = newRepo
+        return newRepo
+    }
+
+    fun provideShortcutsRepository(context: Context): ShortcutsRepository {
+        synchronized(this) {
+            return shortcutsRepository ?: shortcutsRepository ?: createShortcutsRepository(context)
+        }
+    }
+
     private fun createTasksRepository(context: Context): TasksRepository {
         val newRepo =
-            DefaultTasksRepository(TasksRemoteDataSource, createTaskLocalDataSource(context))
+                DefaultTasksRepository(TasksRemoteDataSource, createTaskLocalDataSource(context))
         tasksRepository = newRepo
         return newRepo
     }
@@ -59,9 +76,10 @@ object ServiceLocator {
 
     private fun createDataBase(context: Context): ToDoDatabase {
         val result = Room.databaseBuilder(
-            context.applicationContext,
-            ToDoDatabase::class.java, DB_NAME
-        ).build()
+                context.applicationContext,
+                ToDoDatabase::class.java, DB_NAME
+        ).fallbackToDestructiveMigration()
+                .build()
         database = result
         return result
     }

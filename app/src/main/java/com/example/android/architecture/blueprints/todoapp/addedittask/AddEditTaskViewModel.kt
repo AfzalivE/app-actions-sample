@@ -24,6 +24,7 @@ import com.example.android.architecture.blueprints.todoapp.Event
 import com.example.android.architecture.blueprints.todoapp.R
 import com.example.android.architecture.blueprints.todoapp.data.Result.Success
 import com.example.android.architecture.blueprints.todoapp.data.Task
+import com.example.android.architecture.blueprints.todoapp.data.source.ShortcutsRepository
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepository
 import kotlinx.coroutines.launch
 
@@ -31,14 +32,15 @@ import kotlinx.coroutines.launch
  * ViewModel for the Add/Edit screen.
  */
 class AddEditTaskViewModel(
-    private val tasksRepository: TasksRepository
+    private val tasksRepository: TasksRepository,
+    private val shortcutsRepository: ShortcutsRepository
 ) : ViewModel() {
 
     // Two-way databinding, exposing MutableLiveData
     val title = MutableLiveData<String>()
 
     // Two-way databinding, exposing MutableLiveData
-    val description = MutableLiveData<String>()
+    val description = MutableLiveData<String?>()
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -104,7 +106,7 @@ class AddEditTaskViewModel(
         val currentTitle = title.value
         val currentDescription = description.value
 
-        if (currentTitle == null || currentDescription == null) {
+        if (currentTitle == null) {
             _snackbarText.value = Event(R.string.empty_task_message)
             return
         }
@@ -115,10 +117,13 @@ class AddEditTaskViewModel(
 
         val currentTaskId = taskId
         if (isNewTask || currentTaskId == null) {
-            createTask(Task(currentTitle, currentDescription))
+            val task = Task(currentTitle, currentDescription)
+            createTask(task)
+            pushShortcut(task)
         } else {
             val task = Task(currentTitle, currentDescription, taskCompleted, currentTaskId)
             updateTask(task)
+            updateShortcut(task)
         }
     }
 
@@ -135,5 +140,13 @@ class AddEditTaskViewModel(
             tasksRepository.saveTask(task)
             _taskUpdatedEvent.value = Event(Unit)
         }
+    }
+
+    private fun pushShortcut(newTask: Task) {
+        shortcutsRepository.pushShortcut(newTask)
+    }
+
+    private fun updateShortcut(newTask: Task) = viewModelScope.launch {
+        shortcutsRepository.updateShortcuts(listOf(newTask))
     }
 }

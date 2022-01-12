@@ -19,6 +19,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -28,6 +29,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.android.architecture.blueprints.todoapp.R
+import com.example.android.architecture.blueprints.todoapp.ViewModelFactory
+import com.example.android.architecture.blueprints.todoapp.addedittask.AddEditTaskViewModel
+import com.example.android.architecture.blueprints.todoapp.util.getViewModelFactory
 import com.google.android.material.navigation.NavigationView
 
 /**
@@ -38,6 +42,8 @@ class TasksActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val TAG = "TasksActivity"
 
+    private val addEditTaskViewModel by viewModels<AddEditTaskViewModel> { getViewModelFactory() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tasks_act)
@@ -46,6 +52,7 @@ class TasksActivity : AppCompatActivity() {
 
         // Logging for troubleshooting purposes
         logIntent(intent)
+        routeIntent(intent)
 
         val navController: NavController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration =
@@ -55,6 +62,19 @@ class TasksActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         findViewById<NavigationView>(R.id.nav_view)
             .setupWithNavController(navController)
+    }
+
+    private fun routeIntent(intent: Intent) {
+        val bundle: Bundle = intent.extras ?: return
+        val CREATE_THING = "CREATE_THING_NAME"
+        if (bundle.containsKey(CREATE_THING)) {
+            Log.d(TAG, "Routing CREATE_THING intent")
+            addEditTaskViewModel.apply {
+                title.value = bundle.getString(CREATE_THING, "")
+            }.saveTask()
+        } else {
+            Log.d(TAG, "other intents")
+        }
     }
 
     fun logIntent(intent: Intent) {

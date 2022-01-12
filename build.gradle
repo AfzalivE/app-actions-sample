@@ -24,7 +24,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2'
+        classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
 
@@ -57,8 +57,8 @@ ext {
     // Sdk and tools
     // App Actions supported on minSdk 21 and above.
     minSdkVersion = 21
-    targetSdkVersion = 30
-    compileSdkVersion = 30
+    targetSdkVersion = 31
+    compileSdkVersion = 31
 
     // App dependencies
     androidXVersion = '1.0.0'
@@ -82,7 +82,7 @@ ext {
     mockitoVersion = '2.22.0'
     recyclerViewVersion = '1.2.1'
     robolectricVersion = '4.3.1'
-    roomVersion = '2.3.0'
+    roomVersion = '2.4.0'
     rulesVersion = '1.0.1'
     truthVersion = '1.1'
 }

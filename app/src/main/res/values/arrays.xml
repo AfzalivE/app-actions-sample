@@ -16,6 +16,9 @@
   -->
 
 <resources>
+    <array name="tasks_synonyms">
+        <item>task</item>
+    </array>
     <array name="completed_tasks_synonyms">
         <item>completed</item>
         <item>completed tasks</item>
@@ -36,5 +39,10 @@
         <item>show progress</item>
         <item>stats</item>
     </array>
+
+    <string-array name="example_queries">
+        <item>Create a task called $text1</item>
+        <item>Add $text1</item>
+    </string-array>
 
 </resources>
