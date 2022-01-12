@@ -33,16 +33,20 @@
 
     <capability
         android:name="custom.actions.intent.EXAMPLE_INTENT"
-        app:queryPatterns="@array/example_queries">
+        app:queryPatterns="@array/ExampleQueries">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity"
             android:targetPackage="com.afzaln.appactions">
             <url-template
-                android:value="http://custom.com{?itemName}" />
+                android:value="http://custom.com{?number_of_items,item_name}" />
             <parameter
-                android:name="itemName"
-                android:key="itemName"
+                android:name="number_of_items"
+                android:key="number_of_items"
+                android:mimeType="https://schema.org/Number" />
+            <parameter
+                android:name="item_name"
+                android:key="item_name"
                 android:mimeType="https://schema.org/Text" />
         </intent>
     </capability>

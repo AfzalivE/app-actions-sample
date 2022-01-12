@@ -40,9 +40,11 @@
         <item>stats</item>
     </array>
 
-    <string-array name="example_queries">
-        <item>Create a task called $text1</item>
-        <item>Add $text1</item>
+    <string-array name="ExampleQueries">
+        <item>start making a $text1</item>
+        <item>start making an $text1</item>
+        <item>craft $number1 $text1 items</item>
+        <item>produce $text1 $number1 times</item>
     </string-array>
 
 </resources>
