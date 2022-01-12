@@ -39,7 +39,7 @@
             android:targetClass="com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity"
             android:targetPackage="com.afzaln.appactions">
             <url-template
-                android:value="http://custom.com{?number_of_items,item_name}" />
+                android:value="http://todo.androidappactions.com{?number_of_items,item_name}" />
             <parameter
                 android:name="number_of_items"
                 android:key="number_of_items"
@@ -56,6 +56,8 @@
             android:action="android.intent.action.VIEW"
             android:targetClass="com.example.android.architecture.blueprints.todoapp.tasks.TasksActivity"
             android:targetPackage="com.afzaln.appactions">
+            <url-template
+                android:value="http://todo.androidappactions.com{?itemListName,description,itemListElementName}" />
             <!-- Eg. itemListName = "Grocery List" -->
             <parameter
                 android:name="itemList.name"
