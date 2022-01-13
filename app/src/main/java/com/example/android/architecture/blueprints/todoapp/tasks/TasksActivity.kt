@@ -87,6 +87,10 @@ class TasksActivity : AppCompatActivity() {
             Log.d(TAG, "[$key=${bundle.get(key)}]");
         }
 
+        val data = intent.data
+
+        Log.d(TAG, "Intent data: $data ")
+
         Log.d(TAG, "Logging intent data complete")
     }
 
