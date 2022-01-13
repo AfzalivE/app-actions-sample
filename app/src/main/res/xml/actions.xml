@@ -18,13 +18,12 @@
 <actions>
 
     <!-- This file describes the supported actions by this app -->
-
-    <action intentName="actions.intent.UPDATE_ITEM_LIST">
+    <action intentName="actions.intent.CREATE_ITEM_LIST">
 
         <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
         <!-- Define the urlTemplate in the format you define your deeplinks in AndroidManifest.xml -->
 
-        <fulfillment urlTemplate="https://todo.androidappactions.com/start{?itemListName,itemListElementName}">
+        <fulfillment urlTemplate="https://todo.androidappactions.com/create{?itemListName,itemListElementName}">
 
             <!-- Define how the actions parameters (intentParameter) is mapped in the urlTemplate above -->
             <parameter-mapping
@@ -44,36 +43,51 @@
 
     </action>
 
-    <action intentName="actions.intent.STOP_EXERCISE">
-        <fulfillment urlTemplate="https://todo.androidappactions.com/stop" />
-    </action>
+    <action intentName="actions.intent.UPDATE_ITEM_LIST">
 
-    <action intentName="actions.intent.GET_EXERCISE_OBSERVATION">
+        <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
+        <!-- Define the urlTemplate in the format you define your deeplinks in AndroidManifest.xml -->
 
-        <!-- You can define the fulfillment mode, it can be SLICE or DEEPLINK -->
-        <!-- When slice is used, make sure you are supporting slices in your app -->
-        <!-- Also, not that the urlTemplate must be of the style content://{slice_provider_authority}/... -->
-        <!-- Make sure that the authority matches with the one defined in AndroidManifest.xml -->
+        <fulfillment urlTemplate="https://todo.androidappactions.com/update{?itemListName,itemListElementName}">
 
-        <fulfillment
-            fulfillmentMode="actions.fulfillment.SLICE"
-            urlTemplate="content://com.devrel.android.fitactions.slices.provider/stats{?exerciseType}">
-
-            <!-- If a parameter is set as required, the action will only be fulfilled if the parameter is found -->
-            <!-- That's why a fallback urlTemplate needs to be provided for such case. -->
+            <!-- Define how the actions parameters (intentParameter) is mapped in the urlTemplate above -->
+            <parameter-mapping
+                intentParameter="itemList.name"
+                required="true"
+                urlParameter="itemListName" />
 
             <parameter-mapping
-                intentParameter="exerciseObservation.aboutExercise.name"
-                required="true"
-                urlParameter="exerciseType" />
+                intentParameter="itemList.itemListElement.name"
+                urlParameter="itemListElementName" />
 
         </fulfillment>
 
-        <!-- In case the exercise name is not found we fallback to the stats deep-link inside the app -->
+        <fulfillment
+            fulfillmentMode="actions.fulfillment.DEEPLINK"
+            urlTemplate="https://todo.androidappactions.com/fallback" />
+
+    </action>
+
+    <action intentName="actions.intent.GET_ITEM_LIST">
+
+        <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
+        <!-- Define the urlTemplate in the format you define your deeplinks in AndroidManifest.xml -->
+
+        <fulfillment urlTemplate="https://todo.androidappactions.com/get{?name,category,description}">
+
+            <!-- e.g. name = "Grocery List" -->
+            <!-- (Optional) Require a field eg.name for fulfillment with required="true" -->
+            <parameter-mapping urlParameter="name" intentParameter="itemList.name" required="true" />
+            <!-- e.g. category = "List" -->
+            <parameter-mapping urlParameter="category" intentParameter="itemList.category" />
+            <!-- e.g. description = "For December" -->
+            <parameter-mapping urlParameter="description" intentParameter="itemList.description" />
+
+        </fulfillment>
 
         <fulfillment
             fulfillmentMode="actions.fulfillment.DEEPLINK"
-            urlTemplate="https://todo.androidappactions.com/stats" />
+            urlTemplate="https://todo.androidappactions.com/fallback" />
 
     </action>
 
