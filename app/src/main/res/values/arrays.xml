@@ -16,8 +16,11 @@
   -->
 
 <resources>
-    <array name="tasks_synonyms">
+    <array name="task_synonyms">
         <item>task</item>
+    </array>
+    <array name="project_synonyms">
+        <item>project</item>
     </array>
     <array name="completed_tasks_synonyms">
         <item>completed</item>

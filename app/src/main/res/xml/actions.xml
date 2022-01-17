@@ -15,6 +15,58 @@
   ~
   -->
 
+<!--
+    Usage details:
+
+    UPDATE_ITEM_LIST:
+        Example: "add milk to my grocery list on thingy"
+        Result: itemListName: grocery, itemListElementName: milk
+        Example: "add play basketball today to my list on thingy"
+        Result: itemListName: my, itemListElementName: play basketball today
+        Example: "add eggs to my thingy shopping list"
+        Result: itemListName: shopping, itemListElementName: eggs
+        Example: "add play basketball to thingy" or "add play basketball to my thingy list"
+        Result: Doesn't work, shows Google search results.
+
+        Notes: Multiple words work for both itemListName and itemListElementName.
+
+    GET_THING:
+        Example: "Open waterfall hikes on thingy"
+        Result: thing.name: waterfall hikes
+        Example: "Open florida vacation project on thingy"
+        Result: thing.name: florida vacation project
+        Example: "Find purchase basketball on thingy"
+        Result: thing.name: purchase basketball
+        Example: "Look up eggs on thingy"
+        Result: thing.name: eggs
+
+    OPEN_APP_FEATURE:
+
+
+    Not working:
+
+        CREATE_ITEM_LIST:
+            Creates a list on Google assistant's list. Especially after it has created a list
+            with the same name as the app, other queries sometimes fail as well.
+
+        GET_ITEM_LIST:
+            Google Assistant tries to find the list on its internal list and fails. Never passes
+            the query to our app.
+
+        CREATE_THING:
+            Only allows for one-word things and, many times, replaces the user's queries with
+            its own words.
+            Example: "Add basketball to thingy"
+            Result: thing.name: Basketball at the Summer Olympics
+            Example: "Add soccer to thingy"
+            Result: thing.name: Football at the Summer Olympics
+            Example: "Add weight lifting to thingy"
+            Result: thing.name: weight training
+            Example: "Add play basketball today to thingy"
+            Result: Doesn't work. Shows Google search results.
+
+-->
+
 <actions>
 
     <!-- This file describes the supported actions by this app -->
@@ -23,13 +75,17 @@
         <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
         <!-- Define the urlTemplate in the format you define your deeplinks in AndroidManifest.xml -->
 
-        <fulfillment urlTemplate="https://todo.androidappactions.com/create{?itemListName,itemListElementName}">
+        <fulfillment urlTemplate="https://todo.androidappactions.com/create{?itemListName,description,itemListElementName}">
 
             <!-- Define how the actions parameters (intentParameter) is mapped in the urlTemplate above -->
             <parameter-mapping
                 intentParameter="itemList.name"
                 required="true"
                 urlParameter="itemListName" />
+
+            <parameter-mapping
+                intentParameter="itemList.description"
+                urlParameter="description" />
 
             <parameter-mapping
                 intentParameter="itemList.itemListElement.name"
@@ -68,34 +124,34 @@
 
     </action>
 
-    <action intentName="actions.intent.GET_ITEM_LIST">
+    <entity-set entitySetId="taskEntitySet">
+        <!-- Provide an identifier per entity -->
+        <entity
+            name="list"
+            alternateName="@array/task_synonyms"
+            identifier="ID_ONE" />
+    </entity-set>
 
-        <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
-        <!-- Define the urlTemplate in the format you define your deeplinks in AndroidManifest.xml -->
+    <entity-set entitySetId="projectEntitySet">
+        <!-- Provide an identifier per entity -->
+        <entity
+            name="list"
+            alternateName="@array/project_synonyms"
+            identifier="ID_ONE" />
+    </entity-set>
 
-        <fulfillment urlTemplate="https://todo.androidappactions.com/get{?name,category,description}">
-
-            <!-- e.g. name = "Grocery List" -->
-            <!-- (Optional) Require a field eg.name for fulfillment with required="true" -->
+    <action intentName="actions.intent.GET_THING">
+        <!-- Use URL from entity match for deep link fulfillment -->
+        <!-- Example: url = 'https://www.mywebsite.com/link1/item1' -->
+        <fulfillment urlTemplate="https://todo.androidappactions.com/search{?thing.name}">
             <parameter-mapping
-                intentParameter="itemList.name"
+                intentParameter="thing.name"
                 required="true"
-                urlParameter="name" />
-            <!-- e.g. category = "List" -->
-            <parameter-mapping
-                intentParameter="itemList.category"
-                urlParameter="category" />
-            <!-- e.g. description = "For December" -->
-            <parameter-mapping
-                intentParameter="itemList.description"
-                urlParameter="description" />
-
+                urlParameter="thing.name" />
         </fulfillment>
 
-        <fulfillment
-            fulfillmentMode="actions.fulfillment.DEEPLINK"
-            urlTemplate="https://todo.androidappactions.com/fallback" />
-
+        <!-- Provide a fallback fulfillment with no required parameters. For example, to your app search or router deeplink -->
+        <fulfillment urlTemplate="https://todo.androidappactions.com/fallback_search" />
     </action>
 
 </actions>
