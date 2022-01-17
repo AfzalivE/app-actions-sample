@@ -69,36 +69,6 @@
 
 <actions>
 
-    <!-- This file describes the supported actions by this app -->
-    <action intentName="actions.intent.CREATE_ITEM_LIST">
-
-        <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
-        <!-- Define the urlTemplate in the format you define your deeplinks in AndroidManifest.xml -->
-
-        <fulfillment urlTemplate="https://todo.androidappactions.com/create{?itemListName,description,itemListElementName}">
-
-            <!-- Define how the actions parameters (intentParameter) is mapped in the urlTemplate above -->
-            <parameter-mapping
-                intentParameter="itemList.name"
-                required="true"
-                urlParameter="itemListName" />
-
-            <parameter-mapping
-                intentParameter="itemList.description"
-                urlParameter="description" />
-
-            <parameter-mapping
-                intentParameter="itemList.itemListElement.name"
-                urlParameter="itemListElementName" />
-
-        </fulfillment>
-
-        <fulfillment
-            fulfillmentMode="actions.fulfillment.DEEPLINK"
-            urlTemplate="https://todo.androidappactions.com/fallback" />
-
-    </action>
-
     <action intentName="actions.intent.UPDATE_ITEM_LIST">
 
         <!-- Each action requires at least one fulfillment that defines how the app will handle this action -->
