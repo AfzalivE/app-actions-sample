@@ -77,11 +77,18 @@
 
             <!-- e.g. name = "Grocery List" -->
             <!-- (Optional) Require a field eg.name for fulfillment with required="true" -->
-            <parameter-mapping urlParameter="name" intentParameter="itemList.name" required="true" />
+            <parameter-mapping
+                intentParameter="itemList.name"
+                required="true"
+                urlParameter="name" />
             <!-- e.g. category = "List" -->
-            <parameter-mapping urlParameter="category" intentParameter="itemList.category" />
+            <parameter-mapping
+                intentParameter="itemList.category"
+                urlParameter="category" />
             <!-- e.g. description = "For December" -->
-            <parameter-mapping urlParameter="description" intentParameter="itemList.description" />
+            <parameter-mapping
+                intentParameter="itemList.description"
+                urlParameter="description" />
 
         </fulfillment>
 
