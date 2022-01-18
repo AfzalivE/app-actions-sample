@@ -17,6 +17,7 @@ package com.example.android.architecture.blueprints.todoapp.tasks
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
@@ -66,14 +67,17 @@ class TasksActivity : AppCompatActivity() {
 
     private fun routeIntent(intent: Intent) {
         val bundle: Bundle = intent.extras ?: return
-        val CREATE_THING = "CREATE_THING_NAME"
-        if (bundle.containsKey(CREATE_THING)) {
-            Log.d(TAG, "Routing CREATE_THING intent")
-            addEditTaskViewModel.apply {
-                title.value = bundle.getString(CREATE_THING, "")
-            }.saveTask()
-        } else {
-            Log.d(TAG, "other intents")
+        intent.data?.let { uri: Uri ->
+            if (uri.encodedPath == "/update") {
+                Log.d(TAG, "Routing UPDATE_LIST_ITEM intent")
+                val taskName = bundle.getString("itemListElementName", "")
+                val projectName = bundle["itemListName"]
+                addEditTaskViewModel.apply {
+                    title.value = taskName
+                }.saveTask()
+            } else {
+                Log.d(TAG, "other intents")
+            }
         }
     }
 
