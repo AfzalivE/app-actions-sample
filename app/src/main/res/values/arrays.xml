@@ -44,10 +44,10 @@
     </array>
 
     <string-array name="ExampleQueries">
-        <item>start making a $text1</item>
-        <item>start making an $text1</item>
-        <item>craft $number1 $text1 items</item>
-        <item>produce $text1 $number1 times</item>
+        <item>add $text1</item>
+        <item>add $text1 to $text2 project</item>
+        <item>create $text1 project</item>
+        <item>create $text2 project and add $text1</item>
     </string-array>
 
 </resources>

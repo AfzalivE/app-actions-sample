@@ -50,7 +50,8 @@
             Result: Doesn't work. Shows Google search results.
 -->
 
-<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <capability android:name="actions.intent.UPDATE_ITEM_LIST">
 
@@ -93,4 +94,19 @@
 
     </capability>
 
+    <capability
+        android:name="custom.actions.intent.EXAMPLE_INTENT"
+        app:queryPatterns="@array/ExampleQueries">
+        <intent android:action="android.intent.action.VIEW">
+            <parameter
+                android:name="text1"
+                android:key="item_name"
+                android:mimeType="https://schema.org/Text" />
+            <parameter
+                android:name="text2"
+                android:key="project_name"
+                android:mimeType="https://schema.org/Text" />
+            <url-template android:value="https://todo.androidappactions.com/custom-requests/{?item_name,project_name}" />
+        </intent>
+    </capability>
 </shortcuts>
